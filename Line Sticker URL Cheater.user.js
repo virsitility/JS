@@ -56,14 +56,13 @@ function createBtn(node,url){
     // (\d{2,}) - group 2 抓取 id 部分 : 20111
     // (\/ANDROID|\/IOS) - group 3抓取 android 或 ios : /ANDROID
     // ([^"'@]*) - group 4 抓取檔名，排除@是因為有時檔名會標註兩倍大小的@2x要留給下一個: sticker
-    // (@2x)? - group 5 過濾是否有 2 倍詞綴，基本不使用: @2x
-    // (.png) - group 6 副檔名
+    // (.png) - group 5 副檔名
     // ;compress=true["']?\) - bg image 中不需使用的字，過濾掉
-    var urlset = url.match(/url\(["']?([^"']*sticker\/)(\d{2,})(\/ANDROID|\/IOS)([^"'@]*)(@2x)?(.png);compress=true["']?\)/);
+    var urlset = url.match(/url\(["']?([^"']*sticker\/)(\d{2,})(\/ANDROID|\/IOS)([^"'@]*)(.png);compress=true["']?\)/);
     if(ios == 1) urlset[3] = '/IOS';
     // width 37px 讓前面顯示 copy，後面 setSelectionRange 跳過前面 6 char
-    inputDiv.setAttribute("style","border:1px solid #000;width:37px");
-    inputDiv.setAttribute("value",' Copy ![]('+urlset[1]+urlset[2]+urlset[3]+urlset[4]+popup+animation+urlset[6]+')');
+    inputDiv.setAttribute("style","border:1px solid #000;width:58px");
+    inputDiv.setAttribute("value",' 點擊複製 ![]('+urlset[1]+urlset[2]+urlset[3]+urlset[4]+popup+animation+urlset[5]+')');
     inputDiv.setAttribute('onclick','this.setSelectionRange(6,-1);document.execCommand("copy");');
     node.insertBefore(inputDiv, node.firstChild);
     console.log(url);
