@@ -64,7 +64,7 @@ function createBtn(node,url){
     // width 37px 讓前面顯示 copy，後面 setSelectionRange 跳過前面 6 char
     inputDiv.setAttribute("style","border:1px solid #000;width:37px");
     inputDiv.setAttribute("value",' Copy ![]('+urlset[1]+urlset[2]+urlset[3]+urlset[4]+popup+animation+urlset[6]+')');
-    inputDiv.setAttribute('onclick','onclick','this.setSelectionRange(6,-1);document.execCommand("copy");');
+    inputDiv.setAttribute('onclick','this.setSelectionRange(6,-1);document.execCommand("copy");');
     node.insertBefore(inputDiv, node.firstChild);
     console.log(url);
 }
