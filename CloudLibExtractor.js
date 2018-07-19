@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         雲端書庫提存
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.9
 // @description  提一波
 // @author       csc
 // @match        http://voler.ebookservice.tw/readPdf
