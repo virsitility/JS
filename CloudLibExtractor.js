@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         雲端書庫提存
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  提一波
 // @author       J
-// @match        http://voler.ebookservice.tw/readPdf
+// @match        http://voler.ebookservice.tw/readPdf*
 // @grant        none
 // ==/UserScript==
 // * known issue
@@ -28,20 +28,26 @@ window.onload=function(){
             if (slidesli[i].querySelector('img')) {
                 pageNow = slidesli[i].querySelector('img').src
                 var urlset = pageNow.match(/(\/book\/img\?p=)(\d*)([^"']*)/);
-
-                //alert(urlset.length)
                 //                 alert(urlset[0]+'\n'+urlset[1]+'\n'+urlset[2])
-                var url = 'http://voler.ebookservice.tw/'+urlset[0]
+                var url = ''
                 for (var j = 0; j < slidesli.length*2; ++j){
-                    showimg('http://voler.ebookservice.tw/'+urlset[1]+j+urlset[3],maindiv)
+//                     showimg('http://voler.ebookservice.tw/'+urlset[1]+j+urlset[3],maindiv)
+                    url += 'http://voler.ebookservice.tw/'+urlset[1]+j+urlset[3]+'\n'
                 }
+                urlText(url,maindiv)
                 break
             }
         }
         document.querySelector("#container").remove()
-
     };
     document.body.insertBefore(button,document.body.childNodes[0]);
+}
+
+function urlText (url,maindiv) {
+    var input = document.createElement('textarea');
+    maindiv.appendChild(input)
+    input.setAttribute('onclick','this.select();document.execCommand("copy");');
+    input.value = url
 }
 
 function DownloadPage (url) {
@@ -67,35 +73,22 @@ function showimg(url,maindiv){
 
 }
 
-// function download(img) {
-//     var link = document.createElement("a");
-//     link.href = img;
-//     link.download = true;
-//     link.style.display = "none";
-//     var evt = new MouseEvent("click", {
-//         "view": window,
-//         "bubbles": true,
-//         "cancelable": true
-//     });
 
-//     document.body.appendChild(link);
-//     link.dispatchEvent(evt);
-//     document.body.removeChild(link);
-//     console.log("Downloading...");
-// }
 
-// //jquery
-function downloadJ(...urls) {
-    urls.forEach(url => {
-        let iframe = document.createElement('iframe');
-        iframe.style.visibility = 'collapse';
-        document.body.append(iframe);
-
-        iframe.contentDocument.write(
-            `<form action="${url.replace(/\"/g, '"')}" method="GET"></form>`
-        );
-        iframe.contentDocument.forms[0].submit();
-
-        setTimeout(() => iframe.remove(), 2000);
+function download(img) {
+    var link = document.createElement("a");
+    link.href = img;
+    link.download = true;
+    link.style.display = "none";
+    var evt = new MouseEvent("click", {
+        "view": window,
+        "bubbles": true,
+        "cancelable": true
     });
+
+    document.body.appendChild(link);
+    link.dispatchEvent(evt);
+    document.body.removeChild(link);
+    console.log("Downloading...");
 }
+
