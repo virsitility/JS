@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  提一波
-// @author       csc
+// @author       J
 // @match        http://voler.ebookservice.tw/readPdf
 // @grant        none
 // ==/UserScript==
