@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         雲端書庫提存
 // @namespace    http://tampermonkey.net/
-// @version      0.5
+// @version      0.6
 // @description  提一波
 // @author       J
 // @match        http://voler.ebookservice.tw/*
@@ -16,6 +16,9 @@
 //  * 點擊 Fetch 後下載 AHK 檔後置於資料夾執行，會自動建立資料夾。
 //  * 若無反應則重新整理頁面
 // =====================================
+// * 0.6
+//  * 下載完畢刪除AHK
+//  * 點擊 fetch to ahk 後自動上一頁
 // * 0.5
 //  * 增加下載檔案編碼UTF8避免創建中文資料夾亂碼
 //  * 增加標題regexp判讀 (試讀)
@@ -35,18 +38,19 @@
 // ==/UserScript==
 
 // global var，給AHK下載檔名用
-var title = ''
+var title = '';
 
 window.onload=function(){
-    var slidesli = document.querySelectorAll(".slides > li")
-    console.log(slidesli)
+    var slidesli = document.querySelectorAll(".slides > li");
+    console.log(slidesli);
     // 紀錄當前頁面用，因為HTML中的頁數排序相反，太後面的頁數是空白頁，在翻頁到前半部時HTML才會真的變動
     // 故若從後半部翻回來會先抓到空白頁，需先重新整理。
-    var pageNow = ''
+    var pageNow = '';
     // 取標題並去掉 試讀
-    title = document.querySelector(".top_bookname").innerHTML
-    title = title.match(/(.+)[（試讀）]*/)[1];
-    console.log(title)
+    title = document.querySelector(".top_bookname").innerHTML;
+    console.log(title);
+    title = title.match(/.+[^（試讀）]/)[0];
+    console.log(title);
     var button = document.createElement("input");
     button.style.cssText = 'z-index: 999999999; position: fixed;right: 0;top: 0;padding: 15px;border: none;background: #8BC34A;color: darkgreen;font-size: 20px;box-shadow: 0px 0px 32px 0;';
     button.type = "button";
@@ -59,28 +63,28 @@ window.onload=function(){
         for (var i = 0; i < slidesli.length; ++i){
             // 如果此節點有 img 標則抓取 url
             if (slidesli[i].querySelector('img')) {
-                pageNow = slidesli[i].querySelector('img').src
+                pageNow = slidesli[i].querySelector('img').src;
                 // Regexp
                 // (\/book\/img\?p=)(\d*)([^"']*)
                 // (\/book\/img\?p=) 1 - 截掉前面domain
                 // (\d*) 2 - 獲取頁數
                 // ([^"']*) 3 - 獲取後段id資訊
                 var urlset = pageNow.match(/(\/book\/img\?p=)(\d*)([^"']*)/);
-                var url = []
+                var url = [];
                 //for (var j = 0; j < slidesli.length*2; ++j){
                 //showimg('http://voler.ebookservice.tw/'+urlset[1]+j+urlset[3],maindiv)
                 //url.push('"http://voler.ebookservice.tw'+urlset[1]+j+urlset[3]+'"')
                 //}
-                url = urlToAHK(title, urlset[3], slidesli.length*2)
-                urlText(url,maindiv)
-                break
+                url = urlToAHK(title, urlset[3], slidesli.length*2);
+                urlText(url,maindiv);
+                break;
             }
         }
-        document.querySelector("#container").remove()
+        window.history.back();
     };
-    console.log('btn done')
+    console.log('btn done');
     document.body.insertBefore(button,document.body.childNodes[0]);
-}
+};
 
 function urlToAHK(title,url, length){
     url = 'url := "'+url+'" \n'+
@@ -105,15 +109,16 @@ function urlToAHK(title,url, length){
         '\t UrlDownloadToFile, %page_url%, %folder%\\%num%.jpg \n'+
         '\t TrayTip, %title%, %A_index% / %length% \n' +
         '} \n' +
-        'MsgBox, "%title%" complete!'
-    return url
+        'MsgBox, "%title%" complete! \n' +
+        'FileDelete, %folder%\\%A_ScriptName%';
+    return url;
 }
 
 function urlText (url,maindiv) {
     var input = document.createElement('textarea');
-    maindiv.appendChild(input)
+    maindiv.appendChild(input);
     //input.setAttribute('onclick','this.select();document.execCommand("copy");');
-    input.value = url
+    input.value = url;
 
     var link = document.createElement('a');
     link.setAttribute('download', title+'.ahk');
@@ -126,9 +131,9 @@ function urlText (url,maindiv) {
 }
 
 function saveahk (text) {
-    var textFile = null
+    var textFile = null;
     // 將檔案下載為utf8，否則創建資料夾會變亂碼
-    text = "\ufeff"+text
+    text = "\ufeff"+text;
     var data = new Blob([text], {type: 'text/plain'});
 
     // If we are replacing a previously generated file we need to
