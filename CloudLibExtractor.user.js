@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         雲端書庫提存
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 // @description  提一波
 // @author       J
-// @match        http://voler.ebookservice.tw/readPdf*
+// @match        http://voler.ebookservice.tw/*
 // @grant        none
 //
 // ---
@@ -16,6 +16,10 @@
 //  * 點擊 Fetch 後下載 AHK 檔後置於資料夾執行，會自動建立資料夾。
 //  * 若無反應則重新整理頁面
 // =====================================
+// * 0.5
+//  * 增加下載檔案編碼UTF8避免創建中文資料夾亂碼
+//  * 增加標題regexp判讀 (試讀)
+//  * 增加下載進度traytip
 // * 0.4
 //  * 將網址打包成文字檔下載為AHK格式並透過其下載圖片。
 // * 0.3
@@ -35,12 +39,14 @@ var title = ''
 
 window.onload=function(){
     var slidesli = document.querySelectorAll(".slides > li")
+    console.log(slidesli)
     // 紀錄當前頁面用，因為HTML中的頁數排序相反，太後面的頁數是空白頁，在翻頁到前半部時HTML才會真的變動
     // 故若從後半部翻回來會先抓到空白頁，需先重新整理。
     var pageNow = ''
     // 取標題並去掉 試讀
     title = document.querySelector(".top_bookname").innerHTML
-    title = title.match(/(.+)（試讀）/)[1];
+    title = title.match(/(.+)[（試讀）]*/)[1];
+    console.log(title)
     var button = document.createElement("input");
     button.style.cssText = 'z-index: 999999999; position: fixed;right: 0;top: 0;padding: 15px;border: none;background: #8BC34A;color: darkgreen;font-size: 20px;box-shadow: 0px 0px 32px 0;';
     button.type = "button";
@@ -72,6 +78,7 @@ window.onload=function(){
         }
         document.querySelector("#container").remove()
     };
+    console.log('btn done')
     document.body.insertBefore(button,document.body.childNodes[0]);
 }
 
@@ -96,7 +103,8 @@ function urlToAHK(title,url, length){
         '\t page_url = http://voler.ebookservice.tw/book/img?p=%A_index%%url% \n' +
         '\t num := SubStr("0000" . A_index , -3) \n' +
         '\t UrlDownloadToFile, %page_url%, %folder%\\%num%.jpg \n'+
-        '}' +
+        '\t TrayTip, %title%, %A_index% / %length% \n' +
+        '} \n' +
         'MsgBox, "%title%" complete!'
     return url
 }
@@ -117,10 +125,10 @@ function urlText (url,maindiv) {
     document.body.removeChild(link);
 }
 
-
-
 function saveahk (text) {
     var textFile = null
+    // 將檔案下載為utf8，否則創建資料夾會變亂碼
+    text = "\ufeff"+text
     var data = new Blob([text], {type: 'text/plain'});
 
     // If we are replacing a previously generated file we need to
