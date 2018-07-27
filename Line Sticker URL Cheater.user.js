@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Line Sticker URL Cheater
 // @namespace    http://tampermonkey.net/
-// @version      0.9
+// @version      0.9.1
 // @description  貼圖刷一波
 // @author       CSC
 // @match        https://store.line.me/stickershop/*
@@ -9,6 +9,8 @@
 // =======================================================
 // 將 Line 商店的貼圖 URL 顯示並轉為 markdown 格式。一鍵複製。
 // -------------------------------------------------------
+// 2018 Jul 27 v0.9.1
+//     Colton contributed add pointer cursor style while hover to improve experience.
 // 2018 Jul 11 v0.9
 //     Colton contributed the method prevent input area wiped out while page loading.
 // 2018 Jul 6 v0.3
@@ -30,8 +32,8 @@ var ios = 1;
 // 從標題圖示判斷後綴(貼圖大小)。無動畫貼圖的url是ANDROID，所以若無動畫ios=0
 if(document.querySelector('.MdIcoFlash_b')) popup = '_popup';
 else if(document.querySelector('.MdIcoFlashAni_b')) popup = '_popup';
-else if(document.querySelector('.MdIcoAni_b')) animation = '_animation';
-else if(document.querySelector('.MdIcoPlay_b')) animation = '_animation';
+else if(document.querySelector('.MdIcoAni_b')) animation = '_animation@2x';
+else if(document.querySelector('.MdIcoPlay_b')) animation = '_animation@2x';
 else ios = 0;
 // 版面調整
 document.querySelector('.LySub').remove();
@@ -56,12 +58,13 @@ function createBtn(node,url){
     // (\d{2,}) - group 2 抓取 id 部分 : 20111
     // (\/ANDROID|\/IOS) - group 3抓取 android 或 ios : /ANDROID
     // ([^"'@]*) - group 4 抓取檔名，排除@是因為有時檔名會標註兩倍大小的@2x要留給下一個: sticker
-    // (.png) - group 5 副檔名
+    // (@2x)? - group 5 過濾是否有 2 倍詞綴，基本不使用: @2x
+    // (.png) - group 6 副檔名
     // ;compress=true["']?\) - bg image 中不需使用的字，過濾掉
     var urlset = url.match(/url\(["']?([^"']*sticker\/)(\d{2,})(\/ANDROID|\/IOS)([^"'@]*)(.png);compress=true["']?\)/);
     if(ios == 1) urlset[3] = '/IOS';
     // width 37px 讓前面顯示 copy，後面 setSelectionRange 跳過前面 6 char
-    inputDiv.setAttribute("style","border:1px solid #000;width:58px");
+    inputDiv.setAttribute("style","border:1px solid #000;width:58px; cursor:pointer;");
     inputDiv.setAttribute("value",' 點擊複製 ![]('+urlset[1]+urlset[2]+urlset[3]+urlset[4]+popup+animation+urlset[5]+')');
     inputDiv.setAttribute('onclick','this.setSelectionRange(6,-1);document.execCommand("copy");');
     node.insertBefore(inputDiv, node.firstChild);
