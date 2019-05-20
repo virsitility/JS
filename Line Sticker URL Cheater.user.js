@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Line Sticker URL Cheater
 // @namespace    http://tampermonkey.net/
-// @version      0.9.2
+// @version      0.9.3
 // @description  貼圖刷一波
 // @author       CSC
 // @match        https://store.line.me/stickershop/*
@@ -9,6 +9,8 @@
 // =======================================================
 // 將 Line 商店的貼圖 URL 顯示並轉為 markdown 格式。一鍵複製。
 // -------------------------------------------------------
+// 2019 May 20 v0.9.3
+//     Tuning match regexp - add iPhone and (.*[^"'@]*)
 // 2019 Feb 14 v0.9.2
 //     Tuning the match function to recognize source site code changing. (from ANDROID, IOS to android, ios)
 // 2018 Jul 27 v0.9.1
@@ -63,12 +65,17 @@ function createBtn(node,url){
     // (@2x)? - group 5 過濾是否有 2 倍詞綴，基本不使用: @2x
     // (.png) - group 6 副檔名
     // ;compress=true["']?\) - bg image 中不需使用的字，過濾掉
-    var urlset = url.match(/url\(["']?([^"']*sticker\/)(\d{2,})(\/ANDROID|\/IOS|\/android|\/ios)([^"'@]*)(.png);compress=true["']?\)/);
+
+    var urlset = url.match(/url\(["']?([^"']*sticker\/)(\d{2,})(\/ANDROID|\/IOS|\/android|\/ios|\/iPhone)(.*[^"'@]*)(.png);compress=true["']?\)/);
+//  alert(urlset)
     if(ios == 1) urlset[3] = '/IOS';
+
     // width 37px 讓前面顯示 copy，後面 setSelectionRange 跳過前面 6 char
     inputDiv.setAttribute("style","border:1px solid #000;width:58px; cursor:pointer;");
+
     inputDiv.setAttribute("value",' 點擊複製 ![]('+urlset[1]+urlset[2]+urlset[3]+urlset[4]+popup+animation+urlset[5]+')');
     inputDiv.setAttribute('onclick','this.setSelectionRange(6,-1);document.execCommand("copy");');
     node.insertBefore(inputDiv, node.firstChild);
+//     alert('getready')
     console.log(url);
 }
