@@ -17,30 +17,30 @@ createButton(block, function(){
     var dura = document.querySelector('#applyleave_duration_duration');
     dura.options[0].selected = true;
     document.querySelector('#applyleave_duration_specify_time_content').style="display: none;";
-}, 'è«‹ä??å¤?(09-18)');
+}, 'è«‹ä¸€å¤©(09-18)');
 
 createButton(block, function(){
     doDirtyJob()
     document.querySelector('#applyleave_duration_time_from').options[53].selected = true
     document.querySelector('#applyleave_duration_time_to').options[73].selected = true
     document.querySelector('#applyleave_duration_specify_time_content > input').value = "5.00"
-}, 'è«‹ä?‹å??(13-18)');
+}, 'è«‹ä¸‹åˆ(13-18)');
 
 createButton(block, function(){
     doDirtyJob()
     document.querySelector('#applyleave_duration_time_from').options[37].selected = true
     document.querySelector('#applyleave_duration_time_to').options[49].selected = true
     document.querySelector('#applyleave_duration_specify_time_content > input').value = "3.00"
-}, 'è«‹æ—©ä¸?(09-12)');
+}, 'è«‹æ—©ä¸Š(09-12)');
 
 createButton(block, function(){
     doDirtyJob()
     document.querySelector('#applyleave_duration_time_from').options[41].selected = true
     document.querySelector('#applyleave_duration_time_to').options[45].selected = true
     document.querySelector('#applyleave_duration_specify_time_content > input').value = "1.00"
-}, 'è«‹ä??å°æ??(10-11)');
+}, 'è«‹ä¸€å°æ™‚(10-11)');
 
-//??è¨­??¸é??èª¿æ•´
+//é è¨­é¸é …èª¿æ•´
 function doDirtyJob(){
     var type = document.querySelector('#applyleave_txtLeaveType');
     //type.value="8";
@@ -61,7 +61,7 @@ function doDirtyJob(){
 
 }
 
-//?—¥??Ÿç³»çµ?
+//æ—¥æœŸç³»çµ±
 Date.prototype.yyyymmdd = function() {
     var mm = this.getMonth() + 1; // getMonth() is zero-based
     var dd = this.getDate();
@@ -72,7 +72,7 @@ Date.prototype.yyyymmdd = function() {
            ].join('');
 };
 
-//å»ºç?‹æ?‰é??
+//å»ºç«‹æŒ‰éˆ•
 function createButton(context, func, name){
     var button = document.createElement("input");
     button.type = "button";
