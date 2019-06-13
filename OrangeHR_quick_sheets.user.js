@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         OrangeHR_quick_sheets
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Do dirty job on OrangeHR for you
 // @author       csc
 // @match        http://*/symfony/web/index.php/leave/applyLeave
