@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         OrangeHR_quick_sheets
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Do dirty job on OrangeHR for you
 // @author       csc
 // @match        http://*/symfony/web/index.php/leave/applyLeave
@@ -21,42 +21,44 @@ createButton(block, function(){
 
 createButton(block, function(){
     doDirtyJob()
-    document.querySelector('#applyleave_duration_time_from').options[53].selected = true
-    document.querySelector('#applyleave_duration_time_to').options[73].selected = true
+    document.querySelector('#applyleave_duration_time_from').options[4].selected = true
+    document.querySelector('#applyleave_duration_time_to').options[7].selected = true
     document.querySelector('#applyleave_duration_specify_time_content > input').value = "5.00"
 }, '請下午(13-18)');
 
 createButton(block, function(){
     doDirtyJob()
-    document.querySelector('#applyleave_duration_time_from').options[37].selected = true
-    document.querySelector('#applyleave_duration_time_to').options[49].selected = true
+    document.querySelector('#applyleave_duration_time_from').options[1].selected = true
+    document.querySelector('#applyleave_duration_time_to').options[2].selected = true
     document.querySelector('#applyleave_duration_specify_time_content > input').value = "3.00"
 }, '請早上(09-12)');
 
 createButton(block, function(){
     doDirtyJob()
-    document.querySelector('#applyleave_duration_time_from').options[41].selected = true
-    document.querySelector('#applyleave_duration_time_to').options[45].selected = true
+    document.querySelector('#applyleave_duration_time_from').options[2].selected = true
+    document.querySelector('#applyleave_duration_time_to').options[1].selected = true
     document.querySelector('#applyleave_duration_specify_time_content > input').value = "1.00"
 }, '請一小時(10-11)');
 
+
 //預設選項調整
 function doDirtyJob(){
+    //選特休
     var type = document.querySelector('#applyleave_txtLeaveType');
     //type.value="8";
     //type.selectedIndex=8;
     type.options[9].selected = true
-
+    //日期設為今天
     var dateFrom = document.querySelector('#applyleave_txtFromDate');
     var dateTo = document.querySelector('#applyleave_txtToDate');
     var dateTime = new Date();
     dateFrom.value=dateTime.yyyymmdd();
     dateTo.value=dateTime.yyyymmdd();
 
-
+    //啟動期間
     document.querySelector('#frmLeaveApply > fieldset > ol > li:nth-child(5)').style="display: list-item;";
     var dura = document.querySelector('#applyleave_duration_duration');
-    dura.options[2].selected = true;
+    dura.options[1].selected = true;
     document.querySelector('#applyleave_duration_specify_time_content').style="display: inline;";
 
 }
