@@ -10,55 +10,9 @@
 
 //讀取結束後開始函數
 
-/*
-//重設內文排版，用來複製進ds note
-createButton(document.body, function(){
-    //把內文的換行改成<br>
-    var str = document.querySelector('#main-content');
-    str.innerHTML = str.innerHTML.replace(/(?:\r\n|\r|\n)/g, '<br>');
-    //UI調整&移除
-    document.querySelector('#navigation').remove();
-    document.querySelector('#topbar-container').style.position = 'relative';
-    document.querySelector('#main-content').style = "max-width:none";
-    document.querySelector('#topbar').style = "max-width:none";
-
-    //蒐集所有imgur & youtube rich content
-    var richcontent = document.querySelectorAll('.richcontent');
-    for (var i in richcontent){
-        //若測試youtube抓不到內容的話就用imgur去抓
-        try {
-            var url = richcontent[i].querySelector('.youtube-player').src
-            //將youtube的div框高度設為200，因為複製進ds note 後youtube 嵌入高度會固定在200
-            richcontent[i].style = "height:200px";
-        } catch (e) {
-            //若youtube抓取錯誤則進來catch執行imgur處理
-            url = richcontent[i].querySelector('[id*="imgur-embed-iframe-pub"]').src;
-            var id = getImgurByUrl (url);
-            //重新建立圖片嵌入。原本的iframe嵌入因為domain和ptt.cc不同所以無法透過JS操作
-            var iDiv = document.createElement('div');
-            iDiv.style = "display: flex;justify-content: center;";
-            var x = document.createElement("IMG");
-            x.src = "http://imgur.com/"+id+".jpg";
-            x.style="width:100%;height:100%;max-height: none"
-            iDiv.appendChild(x);
-            richcontent[i].parentNode.insertBefore(iDiv, richcontent[i]);
-            richcontent[i].remove()
-        }
-    }
-}, 'Reformater');
-*/
-
-/*
-//開新視窗，用來窄化字型
-createButton(document.body, function(){
-    var myExternalWindow = window.open(window.location.href, "myWindowName", "resizable");
-    myExternalWindow.resizeTo(730, 1080);
-}, 'Open New Window');
-*/
-
 var t=document.querySelector('#topbar')
 //整理推文
-createButton(t, function(){
+function pushFormatter(){
     var push = document.querySelectorAll('div[class=push]');
     var author = document.querySelector('#main-content > div:nth-child(1) > span.article-meta-value').innerHTML.split(" ")[0];
     console.log(author)
@@ -113,9 +67,9 @@ createButton(t, function(){
         }
 
     }
-}, 'Push formatter');
+}
 
-
+pushFormatter();
 
 
 var getYoutubeIdByUrl = function( url ){
