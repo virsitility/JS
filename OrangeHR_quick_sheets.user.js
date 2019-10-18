@@ -22,21 +22,21 @@ createButton(block, function(){
 createButton(block, function(){
     doDirtyJob()
     document.querySelector('#applyleave_duration_time_from').options[4].selected = true
-    document.querySelector('#applyleave_duration_time_to').options[7].selected = true
+    document.querySelector('#applyleave_duration_time_to').options[8].selected = true
     document.querySelector('#applyleave_duration_specify_time_content > input').value = "5.00"
 }, '請下午(13-18)');
 
 createButton(block, function(){
     doDirtyJob()
     document.querySelector('#applyleave_duration_time_from').options[1].selected = true
-    document.querySelector('#applyleave_duration_time_to').options[2].selected = true
+    document.querySelector('#applyleave_duration_time_to').options[3].selected = true
     document.querySelector('#applyleave_duration_specify_time_content > input').value = "3.00"
 }, '請早上(09-12)');
 
 createButton(block, function(){
     doDirtyJob()
     document.querySelector('#applyleave_duration_time_from').options[2].selected = true
-    document.querySelector('#applyleave_duration_time_to').options[1].selected = true
+    document.querySelector('#applyleave_duration_time_to').options[2].selected = true
     document.querySelector('#applyleave_duration_specify_time_content > input').value = "1.00"
 }, '請一小時(10-11)');
 
