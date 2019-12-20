@@ -1,13 +1,15 @@
 // ==UserScript==
 // @name         OrangeHR_quick_sheets
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 // @description  Do dirty job on OrangeHR for you
 // @author       csc
 // @match        http://*/symfony/web/index.php/leave/applyLeave
 // @grant        none
 // ==/UserScript==
 
+//2019-12-20 
+// 
 var block = document.querySelector('#apply-leave > div.inner');
 
 createButton(block, function(){
@@ -47,7 +49,7 @@ function doDirtyJob(){
     var type = document.querySelector('#applyleave_txtLeaveType');
     //type.value="8";
     //type.selectedIndex=8;
-    type.options[9].selected = true
+    type.options[10].selected = true
     //日期設為今天
     var dateFrom = document.querySelector('#applyleave_txtFromDate');
     var dateTo = document.querySelector('#applyleave_txtToDate');
